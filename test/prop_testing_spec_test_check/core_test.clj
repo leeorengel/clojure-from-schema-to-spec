@@ -12,14 +12,7 @@
             [clojure.spec.test :as stest]))
 
 (defn notes-gen [size] (gen/vector (s/gen ::core/note) size))
-(s/fdef notes-gen
-        :args (s/cat :size pos-int?)
-        :ret tcg/generator?)
-
 (defn rests-gen [size] (gen/vector (s/gen ::core/rest) size))
-(s/fdef rests-gen
-        :args (s/cat :size pos-int?)
-        :ret tcg/generator?)
 
 (defn notes-and-rests-gen [size num-notes]
   (gen/bind (notes-gen num-notes) (fn [v]
@@ -61,8 +54,10 @@
                         (= (count notes) (note-count (:notes new-melody)))
                         (= notes (remove rest? (:notes new-melody)))
                         (= (count (:notes melody)) (count (:notes new-melody))))))
-
+;;
 ;; clojure.spec/test version
+;;
+
 (stest/check `with-new-notes {:gen                          {::core/melody     #(melody-gen 5 4)
                                                              ::core/notes-only #(notes-gen 4)}
                               :clojure.spec.test.check/opts {:num-tests 100}})
