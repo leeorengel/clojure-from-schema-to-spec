@@ -37,9 +37,9 @@
                                   [melody new-notes])]
            (prop/for-all [[melody new-notes] test-gens]
                          (let [new-melody (with-new-notes melody new-notes)]
-                           (= (count new-notes) (note-count (:notes new-melody)))
-                           (= new-notes (remove rest? (:notes new-melody)))
-                           (= (count (:notes melody)) (count (:notes new-melody)))))))
+                           (and (= (count new-notes) (note-count (:notes new-melody)))
+                                (= new-notes (remove rest? (:notes new-melody)))
+                                (= (count (:notes melody)) (count (:notes new-melody))))))))
 ;;
 ;; test.chuck version
 ;;
@@ -51,9 +51,9 @@
                        melody (melody-gen total-melody-num-notes num-notes)
                        notes (notes-gen num-notes)]
                       (let [new-melody (with-new-notes melody notes)]
-                        (= (count notes) (note-count (:notes new-melody)))
-                        (= notes (remove rest? (:notes new-melody)))
-                        (= (count (:notes melody)) (count (:notes new-melody))))))
+                        (and (= (count notes) (note-count (:notes new-melody)))
+                             (= notes (remove rest? (:notes new-melody)))
+                             (= (count (:notes melody)) (count (:notes new-melody)))))))
 ;;
 ;; clojure.spec/test version
 ;;
